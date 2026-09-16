@@ -1,0 +1,464 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Plateforme personnelle d'entrainement au TAGE MAGE." />
+    <title>Atlas TAGE MAGE</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap" rel="stylesheet" />
+    <style>
+      :root {
+        --ink: #1e2119;
+        --forest: #2f4a3d;
+        --orange: #c9703f;
+        --gold: #b7a565;
+        --cream: #faf8f1;
+        --sage: #edf1eb;
+        --white: #ffffff;
+        --line: #e3ddcd;
+        --muted: #767a6d;
+      }
+      *, *::before, *::after { box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
+      body { margin: 0; background: var(--cream); color: var(--ink); font-family: "DM Sans", sans-serif; -webkit-font-smoothing: antialiased; }
+      h1, h2, h3 { font-family: "Fraunces", serif; margin: 0; font-weight: 600; color: var(--ink); }
+      p { margin: 0; }
+      a { color: inherit; }
+      button { font-family: inherit; cursor: pointer; }
+      ol { margin: 0; }
+
+      .eyebrow { font: 500 11px/1 "DM Mono", monospace; letter-spacing: .14em; text-transform: uppercase; color: var(--orange); margin: 0 0 10px; }
+      .app-shell { max-width: 1400px; margin: 0 auto; overflow: hidden; }
+
+      /* topbar */
+      .topbar { position: sticky; top: 0; z-index: 20; display: flex; align-items: center; justify-content: space-between; padding: 18px clamp(24px,9vw,132px); background: rgba(250,248,241,.92); backdrop-filter: blur(6px); border-bottom: 1px solid var(--line); }
+      .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; font: 600 17px "DM Sans", sans-serif; color: var(--ink); }
+      .brand-mark { display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: var(--forest); color: var(--white); font: 700 15px "Fraunces", serif; }
+      .brand b { font-weight: 700; }
+      .topbar-actions { display: flex; align-items: center; gap: 10px; }
+      .icon-button { display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 999px; border: 1px solid var(--line); background: var(--white); color: var(--ink); transition: .15s ease; }
+      .icon-button:hover { border-color: var(--forest); color: var(--forest); }
+      .icon-button svg { width: 16px; height: 16px; }
+      .profile { display: flex; align-items: center; gap: 8px; padding: 8px 16px 8px 12px; border-radius: 999px; border: 1px solid var(--line); background: var(--white); font: 500 13px "DM Sans", sans-serif; color: var(--ink); }
+      .profile-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--orange); }
+
+      /* hero */
+      .hero { display: grid; grid-template-columns: 1.1fr .9fr; gap: 48px; align-items: center; padding: 72px clamp(24px,9vw,132px) 64px; }
+      .hero-copy h1 { font-size: clamp(34px,4.6vw,56px); line-height: 1.08; letter-spacing: -.01em; }
+      .hero-copy h1 em { font-style: italic; color: var(--forest); }
+      .hero-intro { margin-top: 22px; max-width: 440px; font-size: 16px; line-height: 1.6; color: var(--muted); }
+      .hero-buttons { display: flex; align-items: center; gap: 14px; margin-top: 32px; flex-wrap: wrap; }
+      .button { display: inline-flex; align-items: center; gap: 8px; padding: 13px 22px; border-radius: 999px; border: 1px solid transparent; font: 600 14px "DM Sans", sans-serif; text-decoration: none; transition: .15s ease; }
+      .button svg { width: 16px; height: 16px; }
+      .button-primary { background: var(--ink); color: var(--white); }
+      .button-primary:hover { background: var(--forest); }
+      .button-quiet { background: transparent; border-color: var(--line); color: var(--ink); }
+      .button-quiet:hover { border-color: var(--forest); color: var(--forest); }
+      .hero-visual { position: relative; }
+      .hero-image { aspect-ratio: 4 / 3; border-radius: 20px; background: linear-gradient(155deg, var(--forest), #1d2f26 55%, var(--orange)); }
+      .hero-note { position: absolute; left: -18px; bottom: -24px; display: flex; align-items: center; gap: 12px; background: var(--white); border: 1px solid var(--line); border-radius: 14px; padding: 14px 18px; box-shadow: 0 18px 40px -22px rgba(30,33,25,.35); max-width: 230px; }
+      .hero-note span { display: flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 50%; background: var(--sage); color: var(--forest); font: 700 12px "DM Mono", monospace; flex: none; }
+      .hero-note strong { display: block; font: 600 13px "DM Sans", sans-serif; }
+      .hero-note small { color: var(--muted); font-size: 12px; }
+
+      /* stats */
+      .stats { display: grid; grid-template-columns: repeat(4,1fr); gap: 1px; background: var(--line); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+      .stats > div { background: var(--white); padding: 26px clamp(20px,4vw,40px); }
+      .stat-label { display: block; font: 500 11px "DM Mono", monospace; text-transform: uppercase; letter-spacing: .1em; color: var(--muted); margin-bottom: 10px; }
+      .stats strong { font: 600 30px "Fraunces", serif; }
+      .streak { display: flex; align-items: center; gap: 12px; }
+      .streak svg { width: 22px; height: 22px; color: var(--orange); }
+      .streak b { display: block; font: 600 18px "DM Sans", sans-serif; }
+      .streak small { color: var(--muted); font-size: 12px; }
+
+      /* section headings */
+      .section-heading { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; padding: 64px clamp(24px,9vw,132px) 28px; flex-wrap: wrap; }
+      .section-heading h2 { font-size: clamp(26px,3vw,36px); }
+      .section-heading p { max-width: 360px; color: var(--muted); font-size: 14px; line-height: 1.55; }
+
+      /* modules */
+      .module-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 15px; padding: 0 clamp(24px,9vw,132px) 100px; }
+      .module { border: 1px solid var(--line); background: var(--white); padding: 24px; display: flex; flex-direction: column; min-height: 220px; transition: .15s ease; }
+      .module:hover { border-color: var(--forest); transform: translateY(-2px); }
+      .module-top { display: flex; align-items: center; justify-content: space-between; }
+      .module-index { font: 500 11px "DM Mono", monospace; color: var(--muted); }
+      .module-icon { display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 10px; background: var(--sage); color: var(--forest); }
+      .module-icon svg { width: 18px; height: 18px; }
+      .module h3 { font-size: 21px; margin: 22px 0 8px; }
+      .module p { color: var(--muted); font-size: 13px; line-height: 1.5; }
+      .module-footer { margin-top: auto; padding-top: 20px; display: flex; align-items: center; justify-content: space-between; }
+      .module-footer span { font: 11px "DM Mono", monospace; color: var(--muted); }
+      .start-module { display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--line); background: var(--white); color: var(--ink); transition: .15s ease; }
+      .start-module:hover { background: var(--ink); border-color: var(--ink); color: var(--white); }
+      .start-module svg { width: 16px; height: 16px; }
+
+      /* practice note */
+      .practice-note { display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin: 0 clamp(24px,9vw,132px) 90px; padding: 32px; border: 1px solid var(--line); background: var(--white); }
+      .practice-note h2 { font-size: 22px; margin: 6px 0 8px; }
+      .practice-note p { color: var(--muted); font-size: 14px; max-width: 460px; line-height: 1.55; }
+      .upload-control { position: relative; display: flex; align-items: center; gap: 10px; padding: 13px 20px; border-radius: 999px; border: 1px solid var(--line); font: 600 13px "DM Sans", sans-serif; }
+      .upload-control:hover { border-color: var(--forest); color: var(--forest); }
+      .upload-control svg { width: 16px; height: 16px; }
+      .upload-control input { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
+      .pdf-link { display: flex; align-items: center; gap: 8px; margin-left: 14px; font: 600 13px "DM Sans", sans-serif; color: var(--forest); text-decoration: none; }
+      .pdf-link svg { width: 15px; height: 15px; }
+
+      /* method band */
+      .method-band { background: var(--forest); color: var(--white); padding: 70px clamp(24px,9vw,132px); }
+      .method-band .eyebrow { color: #c7d6c9; }
+      .method-content { display: flex; align-items: flex-end; justify-content: space-between; gap: 32px; flex-wrap: wrap; }
+      .method-content h2 { color: var(--white); font-size: clamp(26px,3.4vw,38px); }
+      .method-content h2 em { color: var(--gold); font-style: italic; }
+      .method-content p { max-width: 420px; color: #d7e0d5; font-size: 14px; line-height: 1.6; margin-top: 14px; }
+      .text-button { display: inline-flex; align-items: center; gap: 6px; background: none; border: none; color: var(--white); font: 600 13px "DM Sans", sans-serif; padding: 0; margin-top: 18px; border-bottom: 1px solid rgba(255,255,255,.4); padding-bottom: 2px; }
+      .text-button svg { width: 14px; height: 14px; }
+
+      /* dialogs base */
+      dialog { border: none; padding: 0; background: var(--cream); color: var(--ink); }
+      dialog::backdrop { background: rgba(20,22,17,.55); backdrop-filter: blur(2px); }
+
+      /* quiz modal */
+      .quiz-modal { width: min(1000px,94vw); height: min(680px,90vh); border-radius: 18px; overflow: hidden; flex-direction: column; }
+      .quiz-modal[open] { display: flex; }
+      dialog:not([open]) { display: none !important; }
+      .quiz-topbar { display: flex; align-items: center; justify-content: space-between; padding: 16px 26px; border-bottom: 1px solid var(--line); background: var(--white); }
+      .quiz-topbar .text-button { color: var(--ink); border-bottom: none; margin-top: 0; }
+      .quiz-topbar .text-button svg { width: 15px; height: 15px; }
+      .timer { display: flex; align-items: center; gap: 8px; font: 600 14px "DM Mono", monospace; }
+      .timer svg { width: 16px; height: 16px; color: var(--orange); }
+      .quiz-mode { font: 600 11px "DM Mono", monospace; letter-spacing: .1em; text-transform: uppercase; color: var(--forest); background: var(--sage); padding: 6px 12px; border-radius: 999px; }
+      .quiz-layout { flex: 1; display: grid; grid-template-columns: 220px 1fr; min-height: 0; }
+      .quiz-sidebar { padding: 24px 22px; border-right: 1px solid var(--line); background: var(--white); display: flex; flex-direction: column; gap: 18px; overflow-y: auto; }
+      .question-count { display: flex; align-items: baseline; gap: 4px; font-family: "Fraunces", serif; }
+      .question-count b { font-size: 26px; }
+      .question-count span { color: var(--muted); font-size: 14px; }
+      .question-dots { display: grid; grid-template-columns: repeat(5,1fr); gap: 6px; }
+      .question-dot { width: 30px; height: 30px; border-radius: 8px; border: 1px solid var(--line); background: var(--white); font: 600 11px "DM Mono", monospace; color: var(--muted); }
+      .question-dot.answered { background: var(--sage); border-color: var(--sage); color: var(--forest); }
+      .question-dot.active { border-color: var(--ink); color: var(--ink); }
+      .quiz-score-mini { margin-top: auto; padding-top: 16px; border-top: 1px solid var(--line); }
+      .quiz-score-mini span { display: block; font: 500 11px "DM Mono", monospace; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
+      .quiz-score-mini strong { display: block; font: 600 26px "Fraunces", serif; margin: 4px 0; }
+      .quiz-score-mini small { color: var(--muted); font-size: 11px; }
+      .question-area { padding: 30px clamp(20px,3vw,40px); overflow-y: auto; }
+      .question-tag { font: 500 11px "DM Mono", monospace; text-transform: uppercase; letter-spacing: .1em; color: var(--orange); margin-bottom: 14px; }
+      #question-text { font-size: clamp(19px,2.2vw,24px); line-height: 1.4; margin-bottom: 22px; }
+      .answers { display: flex; flex-direction: column; gap: 10px; }
+      .answer { display: flex; align-items: center; gap: 14px; padding: 14px 16px; border: 1px solid var(--line); background: var(--white); border-radius: 10px; text-align: left; font: 500 14px "DM Sans", sans-serif; color: var(--ink); transition: .12s ease; }
+      .answer:hover:not(:disabled) { border-color: var(--forest); }
+      .answer.selected { border-color: var(--ink); background: var(--sage); }
+      .answer.correct { border-color: var(--forest); background: #e4efe4; color: var(--forest); }
+      .answer.wrong { border-color: #c65b45; background: #fbe8e3; color: #a8442f; }
+      .answer:disabled { cursor: default; }
+      .answer-letter { display: flex; align-items: center; justify-content: center; width: 26px; height: 26px; border-radius: 50%; background: var(--sage); font: 600 12px "DM Mono", monospace; flex: none; color: var(--forest); }
+      .answer.correct .answer-letter { background: var(--forest); color: var(--white); }
+      .answer.wrong .answer-letter { background: #c65b45; color: var(--white); }
+      .feedback { margin-top: 18px; padding: 14px 16px; background: var(--sage); border-left: 3px solid var(--forest); border-radius: 6px; font-size: 13px; line-height: 1.55; color: #39483f; }
+      .question-footer { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-top: 26px; flex-wrap: wrap; }
+      #question-hint { font-size: 13px; color: var(--muted); }
+
+      /* results modal */
+      .results-modal { width: min(480px,92vw); border-radius: 18px; padding: 40px 36px; position: relative; text-align: center; }
+      .results-modal h2 { font-size: 26px; margin: 6px 0 20px; }
+      .result-score { display: flex; align-items: baseline; justify-content: center; gap: 8px; margin-bottom: 14px; }
+      .result-score span { font: 700 56px "Fraunces", serif; color: var(--forest); }
+      .result-score small { color: var(--muted); font-size: 13px; }
+      #result-summary { color: var(--muted); font-size: 14px; line-height: 1.55; }
+      .result-breakdown { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin: 24px 0; }
+      .result-breakdown div { padding: 16px 8px; border: 1px solid var(--line); border-radius: 10px; }
+      .result-breakdown b { display: block; font: 600 22px "Fraunces", serif; }
+      .result-breakdown small { color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: .06em; }
+      .result-actions { display: flex; flex-direction: column; gap: 10px; margin-top: 8px; }
+      .result-actions .button { justify-content: center; width: 100%; }
+      .close-dialog { position: absolute; top: 18px; right: 18px; }
+
+      /* tips modal */
+      .tips-modal { width: min(520px,92vw); border-radius: 18px; padding: 40px 36px; position: relative; }
+      .tips-modal h2 { font-size: 24px; margin: 6px 0 20px; }
+      .tips-modal ol { padding-left: 20px; display: flex; flex-direction: column; gap: 14px; }
+      .tips-modal li { font-size: 14px; line-height: 1.6; color: var(--muted); }
+      .tips-modal li b { color: var(--ink); }
+
+      /* responsive */
+      @media (max-width: 960px) {
+        .hero { grid-template-columns: 1fr; }
+        .hero-visual { order: -1; }
+        .hero-note { position: static; margin-top: 16px; max-width: none; }
+        .stats { grid-template-columns: repeat(2,1fr); }
+        .module-grid { grid-template-columns: repeat(2,1fr); }
+        .quiz-layout { grid-template-columns: 1fr; }
+        .quiz-sidebar { flex-direction: row; flex-wrap: wrap; border-right: none; border-bottom: 1px solid var(--line); }
+        .question-dots { grid-template-columns: repeat(8,1fr); flex: 1; }
+        .quiz-score-mini { margin-top: 0; padding-top: 0; border-top: none; }
+      }
+      @media (max-width: 640px) {
+        .module-grid { grid-template-columns: 1fr; }
+        .stats { grid-template-columns: 1fr 1fr; }
+        .practice-note { flex-direction: column; align-items: flex-start; }
+        .method-content { flex-direction: column; align-items: flex-start; }
+        .topbar { padding: 14px 18px; }
+        .hero { padding: 48px 18px 40px; }
+        .section-heading { padding: 48px 18px 24px; }
+        .module-grid { padding: 0 18px 60px; }
+        .practice-note { margin: 0 18px 60px; }
+      }
+
+      .exam-section{background:#edf1eb;padding:1px 0 92px}.exam-heading{margin-top:88px}.exam-grid{padding:0 clamp(24px,9vw,132px);display:grid;grid-template-columns:repeat(4,1fr);gap:15px}.exam-card{min-height:210px;padding:23px;border:1px solid var(--line);background:var(--white);display:flex;flex-direction:column}.exam-card:nth-child(2){border-top:4px solid var(--orange)}.exam-card:nth-child(3){border-top:4px solid var(--forest)}.exam-card:nth-child(4){border-top:4px solid #b7a565}.exam-number{font:11px "DM Mono",monospace;color:var(--orange)}.exam-card h3{font:600 24px Fraunces,serif;margin:25px 0 8px}.exam-card p{margin:0;font-size:13px;line-height:1.45;color:var(--muted)}.exam-card-footer{margin-top:auto;padding-top:22px;display:flex;justify-content:space-between;align-items:center}.exam-card-footer span{font:11px "DM Mono",monospace;color:var(--muted)}.question-context{max-width:780px;background:#edf1eb;border-left:3px solid var(--forest);padding:15px 17px;margin:0 0 23px;white-space:pre-line;font-size:14px;line-height:1.55;color:#39483f}.question-dots.full-dots{grid-template-columns:repeat(10,1fr);gap:4px}.full-dots .question-dot{width:18px;height:18px;font-size:8px}@media(max-width:800px){.exam-grid{grid-template-columns:1fr 1fr}}@media(max-width:510px){.exam-grid{grid-template-columns:1fr}}
+    </style>
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="topbar">
+        <a class="brand" href="#dashboard" aria-label="Atlas TAGE MAGE, accueil">
+          <span class="brand-mark">A</span>
+          <span>Atlas <b>TAGE MAGE</b></span>
+        </a>
+        <div class="topbar-actions">
+          <button class="icon-button" id="reset-progress" title="Réinitialiser la progression" aria-label="Réinitialiser la progression"><i data-lucide="rotate-ccw"></i></button>
+          <button class="profile" id="profile-button"><span class="profile-dot"></span><span id="profile-label">Ma progression</span></button>
+        </div>
+      </header>
+
+      <section class="hero" id="dashboard">
+        <div class="hero-copy">
+          <p class="eyebrow">PREPARATION INDIVIDUELLE</p>
+          <h1>Travaille ton raisonnement.<br /><em>Gagne ton temps.</em></h1>
+          <p class="hero-intro">Des entrainements courts, corrigés et chronométrés pour construire les automatismes qui font la différence le jour du test.</p>
+          <div class="hero-buttons">
+            <button class="button button-primary" id="start-mix"><i data-lucide="play"></i> Lancer un mix</button>
+            <a class="button button-quiet" href="#modules">Voir les sous-tests <i data-lucide="arrow-down"></i></a>
+          </div>
+        </div>
+        <div class="hero-visual" aria-hidden="true">
+          <div class="hero-image"></div>
+          <div class="hero-note"><span>01</span><strong>Une question à la fois.</strong><small>Le score suit.</small></div>
+        </div>
+      </section>
+
+      <section class="stats" aria-label="Progression">
+        <div><span class="stat-label">Questions traitees</span><strong id="stat-answered">0</strong></div>
+        <div><span class="stat-label">Precision moyenne</span><strong id="stat-accuracy">--</strong></div>
+        <div><span class="stat-label">Temps d'entrainement</span><strong id="stat-time">0 min</strong></div>
+        <div class="streak"><i data-lucide="flame"></i><span><b id="stat-streak">0 jours</b><small>serie en cours</small></span></div>
+      </section>
+
+      <section class="exam-section" id="examens">
+        <div class="section-heading exam-heading">
+          <div><p class="eyebrow">CONDITIONS REELLES</p><h2>Quatre examens blancs.</h2></div>
+          <p>90 questions, 120 minutes, 6 sous-tests. Chaque lancement melange les questions et les options.</p>
+        </div>
+        <div class="exam-grid" id="exam-grid"></div>
+      </section>
+
+      <section class="section-heading" id="modules">
+        <div><p class="eyebrow">PARCOURS</p><h2>Choisis un sous-test.</h2></div>
+        <p>Chaque serie comporte des questions originales, inspirees du format officiel mais ecrites pour cette plateforme.</p>
+      </section>
+
+      <section class="module-grid" id="module-grid"></section>
+
+      <section class="practice-note">
+        <div><p class="eyebrow">ESPACE PERSONNEL</p><h2>Consulte tes propres documents.</h2><p>Ouvre localement tes PDFs de preparation pendant tes revisions. Ils restent sur ton appareil et ne sont ni televerses ni inclus dans ce site.</p></div>
+        <label class="upload-control" for="pdf-input"><i data-lucide="file-up"></i><span>Ouvrir un PDF local</span><input id="pdf-input" type="file" accept="application/pdf" /></label>
+        <a id="pdf-link" class="pdf-link" hidden target="_blank" rel="noopener"><i data-lucide="external-link"></i> Ouvrir le document</a>
+      </section>
+
+      <section class="method-band">
+        <p class="eyebrow">REPERE DE SESSION</p>
+        <div class="method-content"><h2>90 questions.<br /><em>120 minutes.</em></h2><p>Le TAGE MAGE comporte six sous-tests de 15 questions. Vise d'abord une lecture active, puis une gestion calme du temps. Repondre juste compte plus que repondre vite.</p><button class="text-button" id="open-tips">Voir les principes de travail <i data-lucide="arrow-up-right"></i></button></div>
+      </section>
+    </main>
+
+    <dialog id="quiz-modal" class="quiz-modal">
+      <div class="quiz-topbar"><button class="text-button" id="leave-quiz"><i data-lucide="x"></i> Quitter</button><div class="timer"><i data-lucide="timer"></i><span id="timer-value">20:00</span></div><span class="quiz-mode" id="quiz-mode">ENTRAINEMENT</span></div>
+      <div class="quiz-layout"><aside class="quiz-sidebar"><p class="eyebrow" id="quiz-category">CALCUL</p><div class="question-count"><b id="question-number">01</b><span>/ <span id="question-total">05</span></span></div><div id="question-dots" class="question-dots" aria-label="Navigation entre les questions"></div><div class="quiz-score-mini"><span>Score provisoire</span><strong id="live-score">0</strong><small>barème +4 / -1</small></div></aside><section class="question-area"><div id="question-tag" class="question-tag"></div><div id="question-context" class="question-context" hidden></div><h2 id="question-text"></h2><div id="answers" class="answers"></div><div id="feedback" class="feedback" hidden></div><div class="question-footer"><span id="question-hint">Choisis une reponse.</span><button class="button button-primary" id="next-question">Valider <i data-lucide="arrow-right"></i></button></div></section></div>
+    </dialog>
+
+    <dialog id="results-modal" class="results-modal"><button class="close-dialog icon-button" id="close-results" aria-label="Fermer"><i data-lucide="x"></i></button><p class="eyebrow">SERIE TERMINEE</p><h2 id="result-title">Bien joue.</h2><div class="result-score"><span id="result-score">0</span><small>points bruts</small></div><p id="result-summary"></p><div id="result-breakdown" class="result-breakdown"></div><div class="result-actions"><button class="button button-primary" id="retry-quiz"><i data-lucide="rotate-ccw"></i> Refaire la serie</button><button class="button button-quiet" id="return-dashboard">Retour au tableau</button></div></dialog>
+
+    <dialog id="tips-modal" class="tips-modal"><button class="close-dialog icon-button" id="close-tips" aria-label="Fermer"><i data-lucide="x"></i></button><p class="eyebrow">METHODE</p><h2>Rester lucide sous contrainte.</h2><ol><li><b>Balaye d'abord.</b> Identifie les questions evidentes et reserve les plus couteuses pour la fin.</li><li><b>Ne joue pas au hasard.</b> Avec le barème +4 / -1, réponds lorsque tu as une vraie piste ou que tu as éliminé des options.</li><li><b>Note ton erreur.</b> Apres chaque série, classe ton erreur : temps, methode, attention ou connaissance.</li><li><b>Travaille en mini-sessions.</b> Une série ciblée et corrigée vaut mieux qu'une longue session passive.</li></ol></dialog>
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+      (() => {
+        const shuffle = (items) => [...items].sort(() => Math.random() - 0.5);
+        const pick = (items) => items[Math.floor(Math.random() * items.length)];
+        const q = (tag, text, answer, distractors, explanation, context = '') => {
+          const answers = shuffle([answer, ...distractors]);
+          return { tag, text, answers, correct: answers.indexOf(answer), explanation, context };
+        };
+        const n = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
+        const num = (value) => String(Number(value.toFixed ? value.toFixed(2) : value)).replace('.', ',');
+
+        const readingThemes = [
+          { title: 'Mobilite et ville', text: 'Une metropole qui reduit la place de la voiture ne transforme pas seulement les deplacements. Elle modifie aussi la maniere dont les habitants percoivent les distances, les commerces et les usages de l espace public. Pourtant, une piste cyclable ne produit pas automatiquement les memes effets dans tous les quartiers : le relief, la securite et la densite des services comptent autant que son trace.', core: 'Les effets d une infrastructure dependent aussi de son contexte local.', false: 'Une piste cyclable produit toujours les memes effets.' },
+          { title: 'Innovation et travail', text: 'L automatisation supprime certaines taches repetitives mais elle ne rend pas le jugement humain superflu. Dans les organisations qui l adoptent avec succes, les outils sont associes a une rediscussion des roles, de la formation et de la responsabilite. Le probleme n est donc pas de choisir entre humain et machine, mais de definir ce que chacun fait le mieux.', core: 'La technologie est utile lorsqu elle s accompagne d une organisation adaptee.', false: 'L automatisation remplace necessairement tout jugement humain.' },
+          { title: 'Alimentation et information', text: 'Les etiquettes alimentaires simplifient une decision complexe en rendant certains criteres immediatement visibles. Elles ne disent toutefois pas tout : la composition, la portion consommee et le contexte d alimentation echappent en partie a un indicateur unique. Leur interet est de guider un premier choix, non de se substituer a toute reflexion.', core: 'Un indicateur peut orienter un choix sans resumer toute la realite.', false: 'Une etiquette suffit a decrire completement un aliment.' },
+          { title: 'Lecture et ecrans', text: 'La lecture sur ecran favorise la circulation rapide entre les sources, la recherche et l annotation. En revanche, ce gain de fluidite peut encourager une attention morcelee lorsque les sollicitations sont nombreuses. Opposer papier et ecran sans nuance masque donc le role decisif des conditions de lecture.', core: 'Les supports influencent la lecture mais les conditions d usage restent decisives.', false: 'Un support determine a lui seul la qualite de la lecture.' },
+          { title: 'Energie et sobriete', text: 'Ameliorer le rendement d un appareil est souhaitable, mais cela ne garantit pas une baisse globale de la consommation. Un usage devenu moins couteux peut se diffuser plus largement ou augmenter en frequence. Pour evaluer une politique de sobriete, il faut donc observer les usages reels et non la seule performance technique.', core: 'Une performance technique ne permet pas a elle seule de predire la consommation totale.', false: 'Un appareil plus efficace reduit toujours la consommation totale.' },
+          { title: 'Culture et patrimoine', text: 'Numeriser des archives elargit leur acces, notamment pour les personnes eloignees des lieux de conservation. Cette operation ne remplace pas l objet original : son materiau, ses dimensions et les traces de son histoire offrent des informations que l image ne restitue pas entierement. L acces numerique et la conservation physique se completent donc.', core: 'Le numerique facilite l acces sans annuler la valeur de l original.', false: 'La numerisation rend inutile la conservation des originaux.' }
+        ];
+
+        function readingQuestions() {
+          return shuffle(readingThemes).slice(0, 3).flatMap((theme, i) => {
+            const tag = `Comprehension - Texte ${i + 1}`;
+            const context = `${theme.title}\n\n${theme.text}`;
+            return [
+              q(tag, 'Quelle idee resume le mieux ce texte ?', theme.core, [theme.false, 'Le sujet traite est sans importance.', 'Toute solution est inefficace.', 'Les choix individuels ne comptent jamais.'], 'Le passage developpe cette idee avec une nuance explicite.', context),
+              q(tag, 'Quelle proposition contredit le texte ?', theme.false, [theme.core, 'Le contexte d application compte.', 'Le texte invite a nuancer une conclusion immediate.', 'Un facteur unique ne suffit pas toujours a expliquer un resultat.'], 'Cette proposition affirme exactement ce que le texte met en garde de ne pas conclure.', context),
+              q(tag, 'L auteur cherche surtout a :', 'nuancer une conclusion qui parait evidente.', ['raconter une experience personnelle.', 'defendre une solution unique.', 'presenter un conflit sans prendre position.', 'refuser toute evolution.'], 'La construction oppose un benefice reel a une limite ou a une condition.', context),
+              q(tag, 'Quel mot caracterise le mieux la posture de l auteur ?', 'Prudente', ['Triomphante', 'Indifferente', 'Dogmatique', 'Ironique'], 'Le texte insiste sur les conditions, les limites et la complementarite.', context),
+              q(tag, 'Quelle inference est la plus fondee ?', 'Une bonne decision suppose de considerer plusieurs facteurs.', ['Un seul indicateur suffit toujours.', 'Le changement doit etre abandonne.', 'Les usages restent identiques dans tous les cas.', 'La technique est sans effet.'], 'Le texte rejette les explications monocausales et invite a examiner les conditions. ', context)
+            ];
+          });
+        }
+
+        function calcQuestions() {
+          const a = n(64, 120), rate = pick([10, 15, 20, 25]); const final = a * (1 - rate / 100);
+          const distance = n(150, 280), hours = pick([2.5, 3.5, 4]), speed = distance / hours;
+          const total = n(120, 240), share = pick([25, 30, 35, 40]), part = total * share / 100;
+          const x = n(7, 18), multiplier = pick([3, 4, 5]), constant = n(4, 11), rhs = multiplier * x + constant;
+          const base = n(40, 90), increase = pick([12, 15, 20]), afterIncrease = base * (1 + increase / 100), afterBoth = afterIncrease * .9;
+          const unit = n(12, 24), count = n(7, 16), revenue = unit * count;
+          return [
+            q('Calcul - Niveau 1', `Un article coute ${a} euros et beneficie d une remise de ${rate} %. Quel est son prix final ?`, `${num(final)} euros`, [`${num(a)} euros`, `${num(a * (1 + rate / 100))} euros`, `${num(a - rate)} euros`, `${num(a * (1 - rate / 200))} euros`], `On applique la remise au prix : ${a} x ${1 - rate / 100} = ${num(final)}.`),
+            q('Calcul - Niveau 1', `Un vehicule parcourt ${distance} km en ${String(hours).replace('.', ',')} heures. Quelle est sa vitesse moyenne ?`, `${num(speed)} km/h`, [`${num(speed + 10)} km/h`, `${num(speed - 10)} km/h`, `${num(distance / (hours + 1))} km/h`, `${distance} km/h`], `Vitesse = distance / duree = ${distance} / ${hours} = ${num(speed)}.`),
+            q('Calcul - Niveau 1', `Dans un groupe de ${total} personnes, ${share} % choisissent l option A. Combien de personnes ont choisi A ?`, String(part), [String(total - part), String(share), String(part + 10), String(total / 2)], `${share} % de ${total} = ${total} x ${share}/100 = ${part}.`),
+            q('Calcul - Niveau 1', `Resoudre : ${multiplier}x + ${constant} = ${rhs}.`, String(x), [String(x + 1), String(x - 1), String(rhs - constant), String(rhs / multiplier)], `On soustrait ${constant}, puis on divise par ${multiplier} : x = ${x}.`),
+            q('Calcul - Niveau 2', `Un prix de ${base} euros augmente de ${increase} %, puis baisse de 10 %. Quel est le prix final ?`, `${num(afterBoth)} euros`, [`${num(base)} euros`, `${num(afterIncrease)} euros`, `${num(base * 1.1)} euros`, `${num(afterBoth + 5)} euros`], `Les operations successives donnent ${base} x ${1 + increase / 100} x 0,9 = ${num(afterBoth)}.`),
+            q('Calcul - Niveau 1', `Un billet coute ${unit} euros. Combien rapportent ${count} billets ?`, `${revenue} euros`, [`${unit + count} euros`, `${unit * (count - 1)} euros`, `${revenue + unit} euros`, `${count} euros`], `${unit} x ${count} = ${revenue}.`),
+            q('Calcul - Niveau 2', 'Une quantite augmente de 20 %, puis diminue de 20 %. Par rapport a la valeur de depart, elle est :', 'inferieure de 4 %', ['identique', 'superieure de 4 %', 'inferieure de 20 %', 'superieure de 20 %'], '1,20 x 0,80 = 0,96 : la valeur finale est inferieure de 4 %.'),
+            q('Calcul - Niveau 2', 'La moyenne de cinq nombres est 18. Quatre de ces nombres totalisent 61. Quel est le cinquieme ?', '29', ['18', '22', '25', '90'], 'Le total vaut 5 x 18 = 90. Il manque 90 - 61 = 29.'),
+            q('Calcul - Niveau 2', 'Une recette pour 6 personnes utilise 450 g de farine. Quelle quantite faut-il pour 14 personnes ?', '1 050 g', ['750 g', '900 g', '1 200 g', '1 400 g'], 'Proportionnalite : 450 / 6 x 14 = 1 050.'),
+            q('Calcul - Niveau 2', 'Un rectangle a un perimetre de 34 cm et une longueur de 11 cm. Quelle est sa largeur ?', '6 cm', ['5 cm', '11 cm', '12 cm', '17 cm'], '2(L + l) = 34, donc L + l = 17. l = 17 - 11 = 6.'),
+            q('Calcul - Niveau 3', 'Un capital est place a interets simples de 3 % par an. Au bout de 4 ans, les interets sont 96 euros. Quel est le capital initial ?', '800 euros', ['600 euros', '768 euros', '1 000 euros', '3 200 euros'], 'Interets = capital x 0,03 x 4. Donc capital = 96 / 0,12 = 800.'),
+            q('Calcul - Niveau 3', 'Un produit est vendu 72 euros apres une remise de 10 %. Quel etait son prix avant remise ?', '80 euros', ['64,80 euros', '79,20 euros', '82 euros', '90 euros'], '72 represente 90 % du prix initial. 72 / 0,9 = 80.'),
+            q('Calcul - Niveau 3', 'A et B terminent ensemble une tache en 6 h. A seul la termine en 10 h. Combien de temps faut-il a B seul ?', '15 h', ['4 h', '6 h', '10 h', '16 h'], 'Taux ensemble 1/6, taux A 1/10. Taux B = 1/6 - 1/10 = 1/15.'),
+            q('Calcul - Niveau 3', 'Une solution contient 30 % de sel. On ajoute de l eau pour obtenir 20 % de sel. Le volume final est :', '1,5 fois le volume initial', ['1,2 fois', '1,3 fois', '2 fois', 'le meme volume'], 'La quantite de sel reste constante : 0,30V = 0,20Vf, donc Vf = 1,5V.'),
+            q('Calcul - Niveau 3', 'Dans une classe, le ratio filles/garcons est 3/5. Si la classe compte 32 eleves, combien y a-t-il de filles ?', '12', ['8', '16', '20', '24'], '3 + 5 = 8 parts. Une part vaut 32 / 8 = 4 ; 3 parts = 12.')
+          ];
+        }
+
+        const argItems = [
+          ['Une entreprise veut reduire ses reunions car elles seraient trop longues.', 'La duree moyenne des reunions est de 55 minutes et plusieurs decisions restent en attente.', 'Les salles de reunion ont ete renovees.', 'Ce fait soutient directement le diagnostic de lenteur.'],
+          ['Une ville envisage d ouvrir une voie de bus.', 'Aux heures de pointe, les bus existants restent bloqués dans la meme circulation que les voitures.', 'Le reseau de bus utilise des vehicules recents.', 'Le fait montre que la fluidite est un enjeu pertinent.'],
+          ['Une ecole veut instaurer une heure de tutorat hebdomadaire.', 'Les eleves qui demandent de l aide ne trouvent pas toujours de plage commune avec les enseignants.', 'La cour de recreation est plus frequentee le mardi.', 'Le fait met en evidence un besoin d accompagnement structure.'],
+          ['Un musee souhaite elargir ses horaires le soir.', 'De nombreux visiteurs potentiels travaillent aux heures habituelles d ouverture.', 'Le musee possede une nouvelle collection.', 'Le fait renforce l interet d une ouverture decalee.'],
+          ['Une entreprise veut favoriser le covoiturage.', 'Le parking est sature des 8 heures et les salaries viennent souvent des memes zones.', 'Les places de parking sont gratuites.', 'Le fait suggere un benefice concret a mutualiser les trajets.']
+        ];
+        function argumentQuestions() {
+          const base = Array.from({ length: 15 }, (_, i) => {
+            const [claim, support, distractor, explanation] = argItems[i % argItems.length];
+            const variant = i % 3;
+            if (variant === 0) return q('Raisonnement et argumentation', `${claim} Quel fait renforce le plus cette proposition ?`, support, [distractor, 'Le sujet est souvent evoque dans les medias.', 'Le projet couterait moins de 10 euros.', 'Certains participants preferent ne rien changer.'], explanation);
+            if (variant === 1) return q('Raisonnement et argumentation', `${claim} Quel fait affaiblirait le plus cette proposition ?`, 'Un dispositif identique a deja ete teste sans modifier le probleme vise.', [support, distractor, 'Les responsables ont annonce une reunion d information.', 'Le projet serait lance a titre experimental.'], 'Un contre-exemple direct fragilise le lien entre la solution proposee et le probleme.');
+            return q('Raisonnement et argumentation', `On avance l affirmation suivante : « ${claim} » Quelle conclusion est la plus prudente ?`, 'La mesure merite d etre evaluee a partir de donnees liees au probleme vise.', ['La mesure reussira certainement.', 'La mesure doit etre abandonnee sans analyse.', 'Tout changement produit les memes resultats.', 'Les donnees sont inutiles.'], 'Une conclusion rigoureuse demande de verifier le lien entre la mesure et ses effets.');
+          });
+          return base;
+        }
+
+        function conditionQuestions() {
+          const patterns = [
+            ['Quelle est la valeur de x ? (1) 3x + 2 = 20. (2) x est positif.', 'La proposition (1) suffit seule.', ['La proposition (2) suffit seule.', 'Les deux propositions ensemble sont necessaires.', 'Chaque proposition suffit seule.', 'Les informations ne suffisent pas.'], 'La premiere equation determine directement x = 6.'],
+            ['Le nombre n est-il pair ? (1) n est divisible par 6. (2) n est superieur a 10.', 'La proposition (1) suffit seule.', ['La proposition (2) suffit seule.', 'Les deux propositions ensemble sont necessaires.', 'Chaque proposition suffit seule.', 'Les informations ne suffisent pas.'], 'Tout multiple de 6 est pair.'],
+            ['Quel est le prix apres remise ? (1) Le prix initial est 75 euros. (2) La remise est de 20 %.', 'Les deux propositions ensemble sont necessaires.', ['La proposition (1) suffit seule.', 'La proposition (2) suffit seule.', 'Chaque proposition suffit seule.', 'Les informations ne suffisent pas.'], 'Il faut connaitre le prix et le taux pour calculer le prix final.'],
+            ['Le triangle ABC est-il rectangle ? (1) Un de ses angles mesure 90 degres. (2) Ses cotes sont de longueurs differentes.', 'La proposition (1) suffit seule.', ['La proposition (2) suffit seule.', 'Les deux propositions ensemble sont necessaires.', 'Chaque proposition suffit seule.', 'Les informations ne suffisent pas.'], 'Un triangle qui possede un angle droit est rectangle.'],
+            ['Paul est-il plus age que Lea ? (1) Paul a 27 ans. (2) Lea est nee en 2000.', 'Les informations ne suffisent pas.', ['La proposition (1) suffit seule.', 'La proposition (2) suffit seule.', 'Les deux propositions ensemble sont necessaires.', 'Chaque proposition suffit seule.'], 'Sans la date du jour ou l age exact de Lea, la comparaison n est pas certaine.']
+          ];
+          return Array.from({ length: 15 }, (_, i) => { const p = patterns[i % patterns.length]; return q('Conditions minimales', p[0], p[1], p[2], p[3]); });
+        }
+
+        const expressionItems = [
+          ['Complete : « Cette action vise a ___ les retards de livraison. »', 'reduire', ['amplifier', 'observer', 'deplacer', 'ignorer'], 'Le verbe « reduire » exprime l objectif de diminution.'],
+          ['Quelle phrase est correcte ?', 'Les donnees que nous avons recueillies confirment notre hypothese.', ['Les donnees que nous avons recueilli confirme notre hypothese.', 'Les donnees que nous avons recueillies confirme notre hypothese.', 'Les donnees que nous avons recueillis confirment notre hypothese.', 'Les donnees que nous avons recueillir confirment notre hypothese.'], 'Le participe s accorde avec le COD place avant, et le verbe avec le sujet pluriel.'],
+          ['Complete : « Le budget est contraint ; ___, le projet reste prioritaire. »', 'pourtant', ['ainsi', 'par exemple', 'en effet', 'donc'], '« Pourtant » introduit l opposition attendue.'],
+          ['Quelle formulation est la plus precise ?', 'Le temps de traitement a baisse de 18 % en trois mois.', ['Le temps a beaucoup baisse.', 'Les equipes travaillent mieux.', 'Le resultat est plutot positif.', 'Le projet semble fonctionner.'], 'La formulation donne un indicateur quantifie et une periode.'],
+          ['Complete : « Les resultats sont encourageants, ___ ils doivent etre interpretes avec prudence. »', 'mais', ['donc', 'car', 'ainsi', 'puisque'], '« Mais » introduit une restriction.']
+        ];
+        function expressionQuestions() { return Array.from({ length: 15 }, (_, i) => { const p = expressionItems[i % expressionItems.length]; return q('Expression', p[0], p[1], p[2], p[3]); }); }
+
+        function logicQuestions() {
+          const patterns = [
+            ['Complete la suite : 3, 7, 15, 31, ...', '63', ['47', '55', '61', '65'], 'Chaque terme est double puis augmente de 1.'],
+            ['Cinq dossiers A, B, C, D et E sont classes. E est avant A et A est avant B. Quelle proposition est necessairement vraie ?', 'E est avant B.', ['B est avant E.', 'A est avant E.', 'C est avant D.', 'D est dernier.'], 'Par transitivite, E precede A qui precede B.'],
+            ['Si chaque lettre avance de deux rangs dans l alphabet, comment code-t-on MATH ?', 'OCVJ', ['NBUI', 'OCVG', 'QCVJ', 'NBUJ'], 'M devient O, A devient C, T devient V et H devient J.'],
+            ['Tous les cercles bleus sont petits. Certains objets petits sont lourds. Quelle affirmation est necessairement vraie ?', 'Les cercles bleus sont petits.', ['Tous les objets lourds sont bleus.', 'Certains cercles bleus sont lourds.', 'Aucun cercle bleu n est lourd.', 'Tous les petits objets sont bleus.'], 'Seule la premiere relation est garantie par l enonce.'],
+            ['Complete la suite : 2, 6, 12, 20, 30, ...', '42', ['36', '40', '44', '48'], 'Les ecarts sont +4, +6, +8, +10, puis +12.']
+          ];
+          return Array.from({ length: 15 }, (_, i) => { const p = patterns[i % patterns.length]; return q('Logique', p[0], p[1], p[2], p[3]); });
+        }
+
+        const labels = ['Examen blanc 01', 'Examen blanc 02', 'Examen blanc 03', 'Examen blanc 04'];
+        window.mockExamLabels = labels;
+        window.createMockExam = (number) => {
+          const questions = shuffle([
+            ...readingQuestions(), ...calcQuestions(), ...argumentQuestions(), ...conditionQuestions(), ...expressionQuestions(), ...logicQuestions()
+          ]);
+          if (questions.length !== 90) throw new Error('Un examen blanc doit contenir 90 questions.');
+          return { id: `exam-${number}`, title: labels[number - 1], questions, fullExam: true };
+        };
+      })();
+    </script>
+    <script>
+      const modules = [
+        { id: 'comprehension', index: '01', title: 'Comprehension', description: 'Distinguer l’information, l’idée et la position d’un auteur.', icon: 'book-open', questions: [
+          q('Texte court', 'Une mairie transforme trois voies de circulation en pistes cyclables. Dans son bilan, elle note que les commerces voisins ont vu leur frequentation augmenter le week-end, sans pouvoir etablir a elle seule un lien de cause a effet. Quelle conclusion est la plus rigoureuse ?', ['La transformation a necessairement accru les ventes.', 'Les pistes cyclables ont fait diminuer la circulation.', 'Une hausse de frequentation est constatee, mais sa cause reste indeterminee.', 'Les commerces ne beneficiaient pas auparavant de visiteurs le week-end.', 'La mairie aurait du supprimer toutes les voies de circulation.'], 2, 'Le texte constate une hausse mais refuse d’en attribuer la cause avec certitude.'),
+          q('Texte court', 'La publication de donnees ouvertes ne garantit pas leur appropriation par les citoyens. Encore faut-il que ces donnees soient lisibles, mises en contexte et accessibles aux personnes qui souhaitent les utiliser. Quelle idee resume le mieux le passage ?', ['Les donnees ouvertes sont inutiles.', 'La transparence depend aussi de la qualite de presentation des donnees.', 'Les citoyens refusent les outils numeriques.', 'Les donnees doivent rester reservees aux experts.', 'La mise en contexte supprime tout risque d’erreur.'], 1, 'L’auteur nuance : publier ne suffit pas, il faut rendre les informations utilisables.'),
+          q('Inference', 'Un observateur ecrit : « Les villes qui plantent des arbres n’echappent pas aux canicules ; elles se donnent simplement davantage de moyens d’en limiter les effets. » Quelle affirmation est compatible avec cette phrase ?', ['Les arbres empechent toute hausse de temperature.', 'Planter des arbres est inutile face aux canicules.', 'Les arbres constituent une reponse partielle a un probleme plus vaste.', 'Les canicules ne concernent que les villes sans arbres.', 'La plantation doit remplacer toutes les autres politiques publiques.'], 2, 'Le mot « simplement » indique une action utile, mais non suffisante.'),
+          q('Titre', 'Un article decrit comment des bibliotheques pretent des outils de bricolage, des graines et parfois des instruments de musique. Il insiste sur la mise en commun des ressources plutot que sur l’accumulation individuelle. Quel titre convient le mieux ?', ['La disparition des bibliotheques', 'Acheter moins, partager davantage', 'Les outils de bricolage les plus performants', 'Le silence dans les lieux publics', 'La fin de la lecture papier'], 1, 'Le sujet central est le partage des ressources propose par ces bibliotheques.'),
+          q('Nuance', '« Le teletravail a rendu certains echanges plus rapides, mais il a aussi prive les equipes de conversations informelles utiles a la circulation de certaines informations. » Quelle proposition respecte la nuance ?', ['Le teletravail ralentit tous les echanges.', 'Les echanges informels sont inutiles.', 'Le teletravail produit a la fois des gains et des pertes.', 'Le teletravail doit etre interdit.', 'Les equipes communiquent uniquement de facon informelle.'], 2, 'La phrase met explicitement en regard un avantage et une limite.') ] },
+        { id: 'calcul', index: '02', title: 'Calcul', description: 'Resoudre vite, sans calculatrice, les problemes utiles.', icon: 'calculator', questions: [
+          q('Pourcentage', 'Un abonnement coute 80 euros. Son prix augmente de 15 %, puis beneficie d’une remise de 15 %. Quel est son prix final ?', ['80 euros', '78,20 euros', '82 euros', '68 euros', '92 euros'], 1, '80 x 1,15 x 0,85 = 78,20. Une hausse puis une baisse de meme pourcentage ne s’annulent pas.'),
+          q('Vitesse', 'Un train parcourt 180 km en 2 h 15 min. Quelle est sa vitesse moyenne ?', ['70 km/h', '75 km/h', '80 km/h', '85 km/h', '90 km/h'], 2, '2 h 15 min = 2,25 h. Donc 180 / 2,25 = 80 km/h.'),
+          q('Proportion', 'Dans une promotion de 120 etudiants, 35 % suivent un cours d’allemand. Combien n’en suivent pas ?', ['35', '42', '78', '80', '85'], 2, '35 % de 120 = 42. Il reste donc 120 - 42 = 78 etudiants.'),
+          q('Algebre', 'Si 3x - 5 = 19, quelle est la valeur de x ?', ['6', '7', '8', '9', '24'], 2, '3x = 24 puis x = 8.'),
+          q('Moyenne', 'La moyenne de quatre notes est 13. Trois notes sont 10, 14 et 16. Quelle est la quatrieme note ?', ['10', '11', '12', '13', '14'], 2, 'Le total est 4 x 13 = 52. Les trois notes totalisent 40, il manque 12.') ] },
+        { id: 'argumentation', index: '03', title: 'Raisonnement', description: 'Identifier la consequence, la cause et le bon argument.', icon: 'messages-square', questions: [
+          q('Argument', '« Le campus devrait ouvrir la bibliotheque le dimanche, car de nombreux etudiants travaillent en semaine. » Quel fait renforce le plus cet argument ?', ['Les etudiants aiment lire des romans.', 'La bibliotheque est deja ouverte le lundi.', 'Les salles de travail sont presque pleines le samedi apres-midi.', 'Le campus est situe pres d’une gare.', 'Les livres numeriques existent.'], 2, 'Une forte affluence juste avant le dimanche soutient le besoin de davantage de disponibilite.'),
+          q('Logique', 'Tous les candidats admis ont valide leur dossier. Lina n’a pas valide son dossier. Que peut-on conclure ?', ['Lina sera certainement refusee.', 'Lina ne sera pas admise tant que son dossier n’est pas valide.', 'Lina a deja ete admise.', 'Tous les candidats ont le dossier de Lina.', 'Lina a valide son dossier.'], 1, 'La validation est une condition necessaire de l’admission ; sans elle, l’admission ne peut avoir lieu.'),
+          q('Causalite', 'Depuis que le parking est devenu payant, le nombre de voitures stationnees a diminue. Quelle information empecherait le plus de conclure que le prix est la cause de la baisse ?', ['Le prix est faible.', 'Le parking est proche du centre-ville.', 'Une ligne de tramway a ouvert le meme mois.', 'Le parking est surveille.', 'Les tickets sont dematerialises.'], 2, 'Le nouveau tramway est une explication concurrente, qui fragilise l’attribution causale.'),
+          q('Contradiction', 'Quel enonce contredit : « Aucune des propositions du dossier n’est definitivement ecartee » ?', ['Certaines propositions sont en cours d’etude.', 'Toutes les propositions restent possibles.', 'Une proposition ne pourra plus etre examinee.', 'Le dossier sera discute demain.', 'Les avis restent partages.'], 2, 'Dire qu’une proposition ne sera plus examinee revient a l’ecarter definitivement.'),
+          q('Conclusion', '« Cette formation est exigeante : les devoirs sont frequents et les retours individualises. » Quelle conclusion est la mieux fondee ?', ['La formation est forcement mauvaise.', 'Les etudiants n’ont aucun temps libre.', 'La formation demande un investissement regulier.', 'Tous les retours sont positifs.', 'Les devoirs sont impossibles a terminer.'], 2, 'Les elements cites etablissent une exigence et un travail suivi, pas les autres affirmations.') ] },
+        { id: 'conditions', index: '04', title: 'Conditions minimales', description: 'Decider quelle information suffit a repondre.', icon: 'list-checks', questions: [
+          q('Donnees suffisantes', 'Quel est le prix d’un article apres remise ? (1) Son prix initial est 60 euros. (2) La remise est de 20 %.', ['(1) suffit seule', '(2) suffit seule', '(1) et (2) ensemble suffisent', 'Chaque information seule suffit', 'Les informations ne suffisent pas'], 2, 'Il faut connaitre le prix initial et le taux de remise. Ensemble, 60 x 0,8 = 48.'),
+          q('Donnees suffisantes', 'Le triangle ABC est-il rectangle ? (1) Ses cotes mesurent 3, 4 et 5. (2) Son angle le plus grand mesure 90 degres.', ['(1) suffit seule', '(2) suffit seule', '(1) et (2) ensemble suffisent', 'Chaque information seule suffit', 'Les informations ne suffisent pas'], 3, 'Le triplet 3-4-5 implique un triangle rectangle ; un angle de 90 degres aussi.'),
+          q('Donnees suffisantes', 'Quelle est la valeur de y ? (1) x + y = 12. (2) x = 5.', ['(1) suffit seule', '(2) suffit seule', '(1) et (2) ensemble suffisent', 'Chaque information seule suffit', 'Les informations ne suffisent pas'], 2, 'L’equation donne une relation ; avec x = 5, y = 7.'),
+          q('Donnees suffisantes', 'Le nombre entier n est-il pair ? (1) n est divisible par 4. (2) n est un multiple de 6.', ['(1) suffit seule', '(2) suffit seule', '(1) et (2) ensemble suffisent', 'Chaque information seule suffit', 'Les informations ne suffisent pas'], 3, 'Un nombre divisible par 4 est pair, et un multiple de 6 est aussi pair.'),
+          q('Donnees suffisantes', 'Paul est-il plus age que Sarah ? (1) Paul a 26 ans. (2) Sarah est nee avant 1999.', ['(1) suffit seule', '(2) suffit seule', '(1) et (2) ensemble suffisent', 'Chaque information seule suffit', 'Les informations ne suffisent pas'], 4, 'La date actuelle et l’age precis de Sarah manquent ; on ne peut pas trancher avec certitude.') ] },
+        { id: 'expression', index: '05', title: 'Expression', description: 'Choisir la formulation la plus juste et la plus claire.', icon: 'pen-line', questions: [
+          q('Vocabulaire', 'Complete : « Cette mesure vise a ______ les inegalites d’acces au soin. »', ['accentuer', 'resorber', 'deplacer', 'observer', 'inventer'], 1, '« Resorber » signifie reduire progressivement, faire disparaitre.'),
+          q('Syntaxe', 'Quelle phrase est correctement ecrite ?', ['Les donnees que nous avons analysees confirme notre hypothese.', 'Les donnees que nous avons analyse confirme notre hypothese.', 'Les donnees que nous avons analysees confirment notre hypothese.', 'Les donnees que nous avons analyses confirment notre hypothese.', 'Les donnees que nous avons analyser confirment notre hypothese.'], 2, 'COD « donnees » place avant : analysees ; sujet pluriel : confirment.'),
+          q('Connecteur', '« Le cout initial est eleve. ______, les economies realisees sur cinq ans compensent cet investissement. »', ['Pourtant', 'Ainsi', 'Par exemple', 'En revanche', 'D’ailleurs'], 0, '« Pourtant » introduit ici l’opposition entre cout initial et economies futures.'),
+          q('Precision', 'Quelle formulation est la plus precise ?', ['Le projet est bien.', 'Le projet semble assez interessant en general.', 'Le projet devrait sans doute marcher un peu.', 'Le projet reduit de 18 % le temps de traitement moyen.', 'Le projet est clairement superieur.'], 3, 'Elle apporte un indicateur mesurable, contrairement aux jugements vagues.'),
+          q('Coherence', 'Choisis la suite la plus coherente : « Les resultats sont encourageants, ______ ils doivent etre interpretes avec prudence en raison de la taille reduite de l’echantillon. »', ['donc', 'mais', 'car', 'puisque', 'ainsi'], 1, '« Mais » marque la restriction annoncee dans la seconde proposition.') ] },
+        { id: 'logique', index: '06', title: 'Logique', description: 'Trouver la structure derriere une suite ou une contrainte.', icon: 'brain-circuit', questions: [
+          q('Suite', 'Complete la suite : 3, 7, 15, 31, ...', ['47', '55', '61', '63', '65'], 3, 'Chaque terme est le precedent multiplie par 2, puis +1 : 31 x 2 + 1 = 63.'),
+          q('Classement', 'Cinq dossiers A, B, C, D et E sont classes. A est avant B. C est apres D. E est avant A. Quelle proposition est necessairement vraie ?', ['B est premier', 'E est avant B', 'C est dernier', 'D est premier', 'A est avant E'], 1, 'E est avant A, lui-meme avant B : E est donc necessairement avant B.'),
+          q('Code', 'Si dans un code, chaque lettre avance de deux rangs dans l’alphabet, comment code-t-on MATH ?', ['OCVJ', 'OCVJ', 'NBUI', 'OCVG', 'QCVJ'], 0, 'M->O, A->C, T->V, H->J : OCVJ.'),
+          q('Ensemble', 'Tous les cercles bleus sont petits. Certains objets petits sont lourds. Quelle affirmation est necessairement vraie ?', ['Tous les objets lourds sont bleus.', 'Certains cercles bleus sont lourds.', 'Aucun cercle bleu n’est lourd.', 'Les cercles bleus sont petits.', 'Tous les petits objets sont bleus.'], 3, 'Seule la premiere relation est affirmee avec certitude.'),
+          q('Suite', 'Complete : 2, 6, 12, 20, 30, ...', ['36', '40', '42', '44', '48'], 2, 'Les ecarts sont +4, +6, +8, +10, puis +12 : 42.') ] }
+      ];
+      function q(tag, text, answers, correct, explanation) { return { tag, text, answers, correct, explanation }; }
+      const state = { module: null, index: 0, selected: null, answers: [], startedAt: 0, elapsed: 0, timer: null, mix: false, fullExam: false, examNumber: null };
+      const storeKey = 'atlas-tage-mage-progress-v1';
+      const saved = (() => { const d = {answered:0,correct:0,minutes:0,dates:[]}; try { return Object.assign(d, JSON.parse(localStorage.getItem(storeKey) || '{}')); } catch (e) { return d; } })();
+      const $ = (selector) => document.querySelector(selector);
+      function iconRefresh(){ if (window.lucide) { lucide.createIcons(); } }
+      function save(){ try { localStorage.setItem(storeKey, JSON.stringify(saved)); } catch (e) {} }
+      function formatTime(seconds){ const m = Math.floor(seconds / 60).toString().padStart(2,'0'); const s = (seconds % 60).toString().padStart(2,'0'); return `${m}:${s}`; }
+      function refreshStats(){ $('#stat-answered').textContent = saved.answered; $('#stat-accuracy').textContent = saved.answered ? `${Math.round(saved.correct / saved.answered * 100)} %` : '--'; $('#stat-time').textContent = `${saved.minutes} min`; const uniqueDates = [...new Set(saved.dates)]; let streak = 0, cursor = new Date(); while(uniqueDates.includes(cursor.toISOString().slice(0,10))){ streak++; cursor.setDate(cursor.getDate()-1); } $('#stat-streak').textContent = `${streak} jour${streak === 1 ? '' : 's'}`; }
+      function renderModules(){ $('#module-grid').innerHTML = modules.map(m => `<article class="module"><div class="module-top"><span class="module-index">${m.index} / 06</span><span class="module-icon"><i data-lucide="${m.icon}"></i></span></div><h3>${m.title}</h3><p>${m.description}</p><div class="module-footer"><span>5 questions · 20 min</span><button class="start-module" data-module="${m.id}" aria-label="Commencer ${m.title}"><i data-lucide="arrow-up-right"></i></button></div></article>`).join(''); iconRefresh(); document.querySelectorAll('[data-module]').forEach(btn => btn.addEventListener('click', () => { state.fullExam=false; state.examNumber=null; startQuiz(modules.find(m => m.id === btn.dataset.module)); })); }
+      function renderExams(){ $('#exam-grid').innerHTML = window.mockExamLabels.map((label,index)=>`<article class="exam-card"><span class="exam-number">EXAMEN 0${index + 1}</span><h3>${label}</h3><p>6 sous-tests · 15 questions chacun · ordre renouvele a chaque lancement.</p><div class="exam-card-footer"><span>90 Q · 120 MIN</span><button class="start-module" data-exam="${index + 1}" aria-label="Commencer ${label}"><i data-lucide="play"></i></button></div></article>`).join(''); iconRefresh(); document.querySelectorAll('[data-exam]').forEach(btn=>btn.addEventListener('click',()=>startMockExam(Number(btn.dataset.exam)))); }
+      function getQuestions(){ return state.module.questions; }
+      function startMockExam(number){ state.examNumber=number; state.fullExam=true; startQuiz(window.createMockExam(number)); }
+      function startQuiz(module, mix = false){ state.module = mix ? { title: 'Mix express', id: 'mix', questions: [...modules.flatMap(m => m.questions.slice(0,1))].sort(()=>Math.random()-.5) } : module; state.index=0; state.selected=null; state.answers=Array(getQuestions().length).fill(null); state.startedAt=Date.now(); state.elapsed=0; state.mix=mix; const duration=state.fullExam?7200:(mix?900:1200); $('#quiz-mode').textContent = state.fullExam ? 'EXAMEN BLANC' : (mix ? 'MIX EXPRESS' : 'ENTRAINEMENT CIBLE'); $('#quiz-category').textContent = state.module.title.toUpperCase(); $('#question-total').textContent = String(getQuestions().length).padStart(2,'0'); $('#quiz-modal').showModal(); clearInterval(state.timer); state.timer=setInterval(() => { state.elapsed=Math.floor((Date.now()-state.startedAt)/1000); $('#timer-value').textContent=formatTime(Math.max(0,duration-state.elapsed)); },1000); renderQuestion(); }
+      function renderQuestion(){ const question=getQuestions()[state.index]; const answer=state.answers[state.index]; $('#question-number').textContent=String(state.index+1).padStart(2,'0'); $('#question-tag').textContent=question.tag.toUpperCase(); const context=$('#question-context'); context.hidden=!question.context; context.textContent=question.context || ''; $('#question-text').textContent=question.text; $('#answers').innerHTML=question.answers.map((a,i)=>`<button class="answer ${answer?.selected === i?'selected':''} ${answer?.submitted && i === question.correct ? 'correct':''} ${answer?.submitted && i === answer.selected && i !== question.correct ? 'wrong':''}" data-answer="${i}" ${answer?.submitted?'disabled':''}><span class="answer-letter">${String.fromCharCode(65+i)}</span><span>${a}</span></button>`).join(''); $('#feedback').hidden=!answer?.submitted; $('#feedback').textContent=answer?.submitted ? question.explanation : ''; $('#question-hint').textContent=answer?.submitted ? (answer.selected===question.correct ? 'Bonne reponse.' : 'A retenir pour la prochaine fois.') : 'Choisis une reponse.'; $('#next-question').innerHTML=answer?.submitted ? (state.index===getQuestions().length-1?'Voir mon bilan <i data-lucide="bar-chart-3"></i>':'Question suivante <i data-lucide="arrow-right"></i>') : 'Valider <i data-lucide="arrow-right"></i>'; const dots=$('#question-dots'); dots.className=`question-dots ${state.fullExam?'full-dots':''}`; dots.innerHTML=getQuestions().map((_,i)=>`<button class="question-dot ${i===state.index?'active':''} ${state.answers[i]?.submitted?'answered':''}" data-dot="${i}">${i+1}</button>`).join(''); $('#live-score').textContent=state.answers.reduce((sum,a,i)=>sum+(a?.submitted?(a.selected===getQuestions()[i].correct?4:-1):0),0); document.querySelectorAll('[data-answer]').forEach(btn=>btn.addEventListener('click',()=>{state.answers[state.index]={selected:Number(btn.dataset.answer),submitted:false};renderQuestion();})); document.querySelectorAll('[data-dot]').forEach(btn=>btn.addEventListener('click',()=>{state.index=Number(btn.dataset.dot);renderQuestion();})); iconRefresh(); }
+      function submitOrNext(){ const answer=state.answers[state.index]; if(!answer){ $('#question-hint').textContent='Selectionne une reponse avant de valider.'; return; } if(!answer.submitted){ answer.submitted=true; renderQuestion(); return; } if(state.index===getQuestions().length-1){ finishQuiz(); } else { state.index++; renderQuestion(); } }
+      function finishQuiz(){ clearInterval(state.timer); $('#quiz-modal').close(); const questions=getQuestions(); const submitted=state.answers.filter(Boolean); const correct=state.answers.reduce((total,a,i)=>total+(a?.submitted && a.selected===questions[i].correct ? 1 : 0),0); const wrong=state.answers.reduce((total,a,i)=>total+(a?.submitted && a.selected!==questions[i].correct ? 1 : 0),0); const blank=questions.length-submitted.length; const score=correct*4-wrong; const minutes=Math.max(1,Math.round(state.elapsed/60)); saved.answered+=submitted.length; saved.correct+=correct; saved.minutes+=minutes; const today=new Date().toISOString().slice(0,10); saved.dates.push(today); save(); refreshStats(); $('#result-title').textContent=score >= 12 ? 'Bonne cadence.' : score >= 4 ? 'Tu construis tes reperes.' : 'Chaque erreur est une information.'; $('#result-score').textContent=score; $('#result-summary').textContent=`${correct} bonne${correct>1?'s':''} reponse${correct>1?'s':''} sur ${questions.length}. Cette serie a dure ${formatTime(state.elapsed)}.`; $('#result-breakdown').innerHTML=`<div><b>${correct}</b><small>justes</small></div><div><b>${wrong}</b><small>fausses</small></div><div><b>${blank}</b><small>passees</small></div>`; $('#results-modal').showModal(); iconRefresh(); }
+      $('#next-question').addEventListener('click',submitOrNext); $('#leave-quiz').addEventListener('click',()=>{clearInterval(state.timer);$('#quiz-modal').close();state.fullExam=false;}); $('#start-mix').addEventListener('click',()=>{state.fullExam=false;startQuiz(null,true);}); $('#close-results').addEventListener('click',()=>$('#results-modal').close()); $('#return-dashboard').addEventListener('click',()=>$('#results-modal').close()); $('#retry-quiz').addEventListener('click',()=>{const previous=state.module;$('#results-modal').close();if(state.examNumber && previous.fullExam){startMockExam(state.examNumber);}else{state.fullExam=false;startQuiz(previous,state.mix);}}); $('#open-tips').addEventListener('click',()=>$('#tips-modal').showModal()); $('#close-tips').addEventListener('click',()=>$('#tips-modal').close()); $('#reset-progress').addEventListener('click',()=>{if(confirm('Reinitialiser toute ta progression locale ?')){Object.assign(saved,{answered:0,correct:0,minutes:0,dates:[]});save();refreshStats();}}); $('#pdf-input').addEventListener('change',(event)=>{const file=event.target.files[0];if(!file)return;const link=$('#pdf-link');link.href=URL.createObjectURL(file);link.hidden=false;link.style.display='inline-flex';link.querySelector ? null : null;});
+      renderModules();renderExams();refreshStats();iconRefresh();
+    </script>
+  </body>
+</html>
